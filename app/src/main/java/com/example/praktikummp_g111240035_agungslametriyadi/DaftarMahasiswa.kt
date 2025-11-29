@@ -1,5 +1,6 @@
 package com.example.praktikummp_g111240035_agungslametriyadi
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -11,7 +12,10 @@ import androidx.core.view.WindowInsetsCompat
 import android.util.Patterns
 import java.security.MessageDigest
 
+
 class DaftarMahasiswa : AppCompatActivity() {
+
+    private lateinit var databaseHelper: DBHelper
 
     fun isValidEmail(email:String):Boolean {
         val result:Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -53,6 +57,8 @@ class DaftarMahasiswa : AppCompatActivity() {
         val btnAksiBersih:Button = findViewById<Button>(R.id.btnAksiBersih)
         val btnAksiBatal:Button = findViewById<Button>(R.id.btnAksiBatal)
 
+        databaseHelper = DBHelper(this)
+
         btnAksiDaftar.setOnClickListener {
 
             // Ambil Data dari Edit Text
@@ -77,10 +83,28 @@ class DaftarMahasiswa : AppCompatActivity() {
 
                     // Dapatkan Hash Password
                     val HashedPassword = getMD5Hash(Password)
-                    Toast.makeText(this,"NIM : "+NIM+
-                            " Nama : "+Nama,Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this,"Email : "+Email+
-                            " Password : "+HashedPassword,Toast.LENGTH_SHORT).show()
+
+                    // Buka Akses DB
+                    val db = databaseHelper.readableDatabase
+                    // Lakukan Input Data ke Variabel
+                    val insertValues = ContentValues().apply {
+                        put("nim", NIM)
+                        put("nama", Nama)
+                        put("email",Email)
+                        put("password",HashedPassword)
+                    }
+                    // Lakukan Kueri Insert
+                    val result = db.insert("TBL_MHS", null, insertValues)
+                    // Tutup Akses DB
+                    db.close()
+                    // Cek jika Kueri Sukses
+                    if(result !=-1L)
+                    {
+                        Toast.makeText(applicationContext,"Kueri Sukses",Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    else
+                        Toast.makeText(applicationContext,"Kueri Gagal",Toast.LENGTH_SHORT).show()
 
                 }
 
