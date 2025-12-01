@@ -1,5 +1,6 @@
 package com.example.praktikummp_g111240035_agungslametriyadi
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -37,6 +38,11 @@ class ProfileMahasiswa : AppCompatActivity() {
 
         // Button Ubah
         btnEdit.setOnClickListener{
+            var intent: Intent = Intent(this,EditProfile::class.java)
+            intent.putExtra("nim",dataNIM)
+            intent.putExtra("nama",dataNama)
+            intent.putExtra("email",dataEmail)
+            startActivity(intent)
         }
         // Button Keluar
         btnKeluar.setOnClickListener {
