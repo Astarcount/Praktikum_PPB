@@ -32,9 +32,9 @@ class ProfileMahasiswa : AppCompatActivity() {
         val dataNama:String = intent.getStringExtra("nama").toString()
         val dataEmail:String = intent.getStringExtra("email").toString()
         // Tampilkan Data Intent
-        txtNIM.setText("NIM : " + dataNIM)
-        txtNama.setText("Nama : " + dataNama)
-        txtEmail.setText("E-Mail : " + dataEmail)
+        txtNIM.setText(" : " + dataNIM)
+        txtNama.setText(" : " + dataNama)
+        txtEmail.setText(" : " + dataEmail)
 
         // Button Ubah
         btnEdit.setOnClickListener{
